@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import javax.annotation.Resource;
 import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +36,6 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     @Override
     public T find(Map<String,Object> map) {
         T t = sqlSessionFactory.openSession().selectOne("",map);
-
         return t;
     }
 
@@ -44,16 +44,19 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     }
     @Override
     public void update(Object param) {
-
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("objName",objName);
+        map.put("param",param);
+        sqlSessionFactory.openSession().update("baseSql.updateEntity",param);
     }
 
     @Override
-    public void insert() {
-
+    public void insert(T t) {
+        sqlSessionFactory.openSession().insert("baseSql.insertEntity",t);
     }
 
     @Override
     public void delete(Object param) {
-
+        sqlSessionFactory.openSession().delete("baseSql.deleteEntity",param);
     }
 }

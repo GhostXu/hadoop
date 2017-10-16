@@ -10,7 +10,7 @@ public interface BaseDao<T> {
 
     void update(Object param);
 
-    void insert();
+    void insert(T t);
 
     void delete(Object param);
 
